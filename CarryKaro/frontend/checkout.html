@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CarryKaro - Checkout</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Checkout</h2>
+    <form id="checkout-form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="contact">Contact Number:</label>
+        <input type="text" id="contact" name="contact" required />
+      </div>
+      <div class="form-group">
+        <label for="paymentMode">Payment Mode:</label>
+        <select id="paymentMode" name="paymentMode" required>
+          <option value="cash">Cash</option>
+          <option value="upi">UPI</option>
+          <option value="credit_card">Credit Card</option>
+          <option value="debit_card">Debit Card</option>
+        </select>
+      </div>
+      <button type="submit">Place Order</button>
+    </form>
+    <p id="message" class="message"></p>
+  </div>
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const paymentMode = document.getElementById('paymentMode').value;
+
+      if (!name || !address || !contact || !paymentMode) {
+        document.getElementById('message').textContent = 'Please fill all fields';
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+      if (Object.keys(cart).length === 0) {
+        document.getElementById('message').textContent = 'Your cart is empty';
+        return;
+      }
+
+      try {
+        const userId = localStorage.getItem('userId');
+        const res = await fetch('http://localhost:5000/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, cart, name, address, contact, paymentMode }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.removeItem('cart');
+          alert('Order placed successfully');
+          window.location.href = 'products.html';
+        } else {
+          document.getElementById('message').textContent = data.message || 'Order failed';
+        }
+      } catch (err) {
+        document.getElementById('message').textContent = 'Error connecting to server';
+      }
+    });
+  </script>
+</body>
+</html>

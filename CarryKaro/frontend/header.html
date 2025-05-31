@@ -1,0 +1,147 @@
+<header class="header">
+  <div class="header-left">
+    <button class="menu-btn" aria-label="Menu">&#9776;</button>
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+      <span class="logo-main">CarryKaro</span>
+      <span class="logo-sub">Explore Plus <span class="plus-icon">+</span></span>
+    </div>
+    <input type="text" id="search-bar" placeholder="Search products..." style="margin-left: 20px; padding: 5px 10px; border-radius: 4px; border: 1px solid #ccc; display:none;" />
+  </div>
+  <div class="header-right">
+    <button class="download-btn" aria-label="Download">&#8681;</button>
+    <button class="login-btn" aria-label="Login" onclick="window.location.href='index.html'">&#128100; Login</button>
+    <button class="profile-btn" aria-label="Profile" style="display:none;" onclick="window.location.href='profile.html'">&#128100; Profile</button>
+    <button class="cart-btn" aria-label="Cart" onclick="window.location.href='cart.html'">&#128722;</button>
+  </div>
+</header>
+
+<nav id="hamburger-menu" class="hamburger-menu" style="display:none; position:fixed; top:60px; left:0; background:#fff; width:200px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border-radius: 0 0 8px 8px; z-index: 1001;">
+  <ul id="menu-links" style="list-style:none; margin:0; padding:10px;">
+    <!-- Links will be dynamically inserted here -->
+  </ul>
+</nav>
+
+<script>
+  // Ensure hamburger menu links update on login state change
+  function refreshHamburgerMenu() {
+    const menuLinks = document.getElementById('menu-links');
+    const loginBtn = document.querySelector('.login-btn');
+    const profileBtn = document.querySelector('.profile-btn');
+    const searchBar = document.getElementById('search-bar');
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const menuBtn = document.querySelector('.menu-btn');
+
+    function isLoggedIn() {
+      return localStorage.getItem('userLoggedIn') === 'true';
+    }
+
+    if (isLoggedIn()) {
+      loginBtn.style.display = 'none';
+      profileBtn.style.display = 'inline-block';
+      searchBar.style.display = 'inline-block';
+
+      menuLinks.innerHTML = `
+        <li><a href="profile.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Profile</a></li>
+        <li><a href="admin.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Seller Page</a></li>
+        <li><a href="#" id="logout-link" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Logout</a></li>
+      `;
+
+      document.getElementById('logout-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('userLoggedIn');
+        window.location.href = 'index.html';
+      });
+    } else {
+      loginBtn.style.display = 'inline-block';
+      profileBtn.style.display = 'none';
+      searchBar.style.display = 'none';
+
+      menuLinks.innerHTML = `
+        <li><a href="index.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Login</a></li>
+      `;
+    }
+
+    menuBtn.addEventListener('click', () => {
+      if (hamburgerMenu.style.display === 'none' || hamburgerMenu.style.display === '') {
+        hamburgerMenu.style.display = 'block';
+      } else {
+        hamburgerMenu.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menuBtn.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+        hamburgerMenu.style.display = 'none';
+      }
+    });
+  }
+
+  // Call refreshHamburgerMenu on page load
+  document.addEventListener('DOMContentLoaded', refreshHamburgerMenu);
+</script>
+
+<script>
+  const menuBtn = document.querySelector('.menu-btn');
+  const hamburgerMenu = document.getElementById('hamburger-menu');
+  const menuLinks = document.getElementById('menu-links');
+  const loginBtn = document.querySelector('.login-btn');
+  const profileBtn = document.querySelector('.profile-btn');
+  const searchBar = document.getElementById('search-bar');
+
+  function isLoggedIn() {
+    // Simple check for login state, e.g., presence of token or user info in localStorage
+    const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    console.log('User logged in:', loggedIn);
+    return loggedIn;
+  }
+
+  function updateHeaderForLogin() {
+    if (isLoggedIn()) {
+      console.log('Updating header for logged in user');
+      loginBtn.style.display = 'none';
+      profileBtn.style.display = 'inline-block';
+      searchBar.style.display = 'inline-block';
+
+      // Update hamburger menu links for logged in user
+      menuLinks.innerHTML = `
+        <li><a href="profile.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Profile</a></li>
+        <li><a href="admin.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Seller Page</a></li>
+        <li><a href="#" id="logout-link" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Logout</a></li>
+      `;
+
+      document.getElementById('logout-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('userLoggedIn');
+        window.location.href = 'index.html';
+      });
+    } else {
+      console.log('Updating header for guest user');
+      loginBtn.style.display = 'inline-block';
+      profileBtn.style.display = 'none';
+      searchBar.style.display = 'none';
+
+      // Update hamburger menu links for guest user
+      menuLinks.innerHTML = `
+        <li><a href="index.html" style="text-decoration:none; color:#2874f0; display:block; padding:8px;">Login</a></li>
+      `;
+    }
+  }
+
+  menuBtn.addEventListener('click', () => {
+    if (hamburgerMenu.style.display === 'none' || hamburgerMenu.style.display === '') {
+      hamburgerMenu.style.display = 'block';
+    } else {
+      hamburgerMenu.style.display = 'none';
+    }
+  });
+
+  // Optional: Close menu when clicking outside
+  document.addEventListener('click', (event) => {
+    if (!menuBtn.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+      hamburgerMenu.style.display = 'none';
+    }
+  });
+
+  // Initialize header state on page load
+  updateHeaderForLogin();
+</script>
