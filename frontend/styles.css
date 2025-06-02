@@ -1,0 +1,351 @@
+/* Advanced CSS for Bhavyan Tutorials - Extensive styling with animations, responsive design, and modern UI components */
+
+/* CSS Variables for theme */
+:root {
+  --primary-color: #7b1fa2;
+  --primary-dark: #4a148c;
+  --primary-light: #9c4dcc;
+  --background-gradient: linear-gradient(135deg, #667eea, #764ba2);
+  --text-color: #333;
+  --text-light: #555;
+  --error-color: #d32f2f;
+  --success-color: #388e3c;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition-speed: 0.3s;
+  --border-radius: 12px;
+  --box-shadow-light: 0 8px 24px rgba(0,0,0,0.15);
+  --box-shadow-heavy: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--background-gradient);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: var(--border-radius);
+  border: 3px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Header */
+header {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed) ease;
+  user-select: none;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+  background-color: var(--primary-dark);
+  outline: none;
+}
+
+/* Hamburger menu for mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  width: 30px;
+  height: 22px;
+  justify-content: space-between;
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 960px;
+  margin: 1rem auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  transition: box-shadow var(--transition-speed) ease;
+}
+
+main:hover {
+  box-shadow: var(--box-shadow-heavy);
+}
+
+/* Sections */
+section {
+  margin-bottom: 3rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  border-bottom: 4px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+p {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  user-select: text;
+}
+
+/* Lists */
+ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding-left: 0;
+  flex-wrap: wrap;
+}
+
+ul li a {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(123, 31, 162, 0.4);
+  transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  user-select: none;
+}
+
+ul li a:hover,
+ul li a:focus {
+  background: var(--primary-dark);
+  box-shadow: 0 6px 12px rgba(74, 20, 140, 0.6);
+  outline: none;
+}
+
+/* Forms */
+form {
+  max-width: 450px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  transition: box-shadow var(--transition-speed) ease;
+}
+
+form:hover {
+  box-shadow: var(--box-shadow-heavy);
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  user-select: none;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color var(--transition-speed) ease;
+  user-select: text;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: var(--primary-dark);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--primary-dark);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(74, 20, 140, 0.6);
+}
+
+button:hover,
+button:focus {
+  background: var(--primary-color);
+  box-shadow: 0 6px 12px rgba(123, 31, 162, 0.8);
+  outline: none;
+}
+
+/* Error and success messages */
+#error {
+  color: var(--error-color);
+  font-weight: 700;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  user-select: none;
+}
+
+#success {
+  color: var(--success-color);
+  font-weight: 700;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  user-select: none;
+}
+
+/* Card styles */
+.card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  user-select: none;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-8px);
+  box-shadow: var(--box-shadow-heavy);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  main {
+    max-width: 100%;
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  nav ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}

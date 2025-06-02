@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Signup - Bhavyan Tutorials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Admin Signup</h1>
+  </header>
+  <main>
+    <form id="adminSignupForm">
+      <label for="username">Username:</label><br />
+      <input type="text" id="username" name="username" required /><br /><br />
+      <label for="password">Password:</label><br />
+      <input type="password" id="password" name="password" required /><br /><br />
+      <button type="submit">Signup</button>
+    </form>
+    <p id="error" style="color:red;"></p>
+    <p id="success" style="color:green;"></p>
+  </main>
+  <script>
+    document.getElementById('adminSignupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = e.target.username.value;
+      const password = e.target.password.value;
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/admin/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('success').textContent = data.message;
+          document.getElementById('error').textContent = '';
+          e.target.reset();
+        } else {
+          document.getElementById('error').textContent = data.message || 'Signup failed';
+          document.getElementById('success').textContent = '';
+        }
+      } catch (err) {
+        document.getElementById('error').textContent = 'Server error';
+        document.getElementById('success').textContent = '';
+      }
+    });
+  </script>
+</body>
+</html>

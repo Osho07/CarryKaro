@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - Bhavyan Tutorials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <h1 class="header-title">Admin Dashboard</h1>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="#createStudentSection" class="sidebar-link">Create Student Account</a></li>
+      <li><a href="#uploadNotesSection" class="sidebar-link">Upload Notes</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content container">
+    <section id="createStudentSection" class="card">
+      <h2>Create Student Account</h2>
+      <form id="createStudentForm" class="form">
+        <label for="mobileNumber">Mobile Number:</label>
+        <input type="text" id="mobileNumber" name="mobileNumber" required />
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+        <button type="submit" class="btn-primary">Create Student</button>
+      </form>
+      <p id="createStudentMsg" class="message"></p>
+    </section>
+
+    <section id="uploadNotesSection" class="card">
+      <h2>Upload Notes</h2>
+      <form id="uploadNotesForm" class="form" enctype="multipart/form-data">
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject" required>
+          <option value="">Select Subject</option>
+          <option value="English">English</option>
+          <option value="History">History</option>
+          <option value="Geography">Geography</option>
+          <option value="Science">Science</option>
+          <option value="Algebra">Algebra</option>
+          <option value="Geometry">Geometry</option>
+        </select>
+        <label for="file">Select File (PDF or Word):</label>
+        <input type="file" id="file" name="file" accept=".pdf,.doc,.docx" required />
+        <button type="submit" class="btn-primary">Upload</button>
+      </form>
+      <p id="uploadMsg" class="message"></p>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    document.getElementById('createStudentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mobileNumber = e.target.mobileNumber.value;
+      const password = e.target.password.value;
+      const API_BASE_URL = 'https://your-backend-render-url.com';
+      const res = await fetch(`${API_BASE_URL}/api/admin/create-student`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mobileNumber, password })
+      });
+      const data = await res.json();
+      const msgElem = document.getElementById('createStudentMsg');
+      if (res.ok) {
+        msgElem.style.color = 'green';
+        msgElem.textContent = data.message;
+        e.target.reset();
+      } else {
+        msgElem.style.color = 'red';
+        msgElem.textContent = data.message || 'Failed to create student';
+      }
+    });
+
+    document.getElementById('uploadNotesForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const API_BASE_URL = 'https://your-backend-render-url.com';
+      const res = await fetch(`${API_BASE_URL}/api/admin/upload-notes`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      const msgElem = document.getElementById('uploadMsg');
+      if (res.ok) {
+        msgElem.style.color = 'green';
+        msgElem.textContent = data.message;
+        e.target.reset();
+      } else {
+        msgElem.style.color = 'red';
+        msgElem.textContent = data.message || 'Failed to upload notes';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Dashboard - Bhavyan Tutorials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <h1 class="header-title">Student Dashboard</h1>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="sidebar">
+    <ul class="sidebar-menu">
+      <li><button class="subjectBtn" data-subject="English">English</button></li>
+      <li><button class="subjectBtn" data-subject="History">History</button></li>
+      <li><button class="subjectBtn" data-subject="Geography">Geography</button></li>
+      <li><button class="subjectBtn" data-subject="Science">Science</button></li>
+      <li><button class="subjectBtn" data-subject="Algebra">Algebra</button></li>
+      <li><button class="subjectBtn" data-subject="Geometry">Geometry</button></li>
+    </ul>
+  </nav>
+
+  <main class="main-content container">
+    <section class="card">
+      <h2>Notes</h2>
+      <ul id="notesList" class="notes-list"></ul>
+    </section>
+  </main>
+
+  <script>
+    // Remove token and role checks since no JWT auth
+    // Redirect to login can be handled differently if sessions used
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    const notesList = document.getElementById('notesList');
+    const subjectButtons = document.querySelectorAll('.subjectBtn');
+
+    subjectButtons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const subject = button.getAttribute('data-subject');
+        notesList.innerHTML = '<li>Loading...</li>';
+        try {
+      const res = await fetch(`http://localhost:5000/api/notes/${subject}`);
+          if (!res.ok) throw new Error('Failed to fetch notes');
+          const notes = await res.json();
+          if (notes.length === 0) {
+            notesList.innerHTML = '<li>No notes available for this subject.</li>';
+            return;
+          }
+          notesList.innerHTML = '';
+          notes.forEach(note => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `/uploads/${subject}/${note.filename}`;
+            link.textContent = note.originalname;
+            link.target = '_blank';
+            li.appendChild(link);
+            notesList.appendChild(li);
+          });
+        } catch (err) {
+          notesList.innerHTML = '<li>Error loading notes.</li>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

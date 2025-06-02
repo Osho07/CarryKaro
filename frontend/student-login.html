@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Login - Bhavyan Tutorials</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Student Login</h1>
+    <form id="studentLoginForm">
+      <label for="mobileNumber">Mobile Number:</label>
+      <input type="text" id="mobileNumber" name="mobileNumber" required />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMsg" class="message"></p>
+  </div>
+
+  <script>
+    document.getElementById('studentLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mobileNumber = e.target.mobileNumber.value;
+      const password = e.target.password.value;
+      const res = await fetch('http://localhost:5000/api/auth/student/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobileNumber, password }),
+      });
+      const data = await res.json();
+      const msgElem = document.getElementById('loginMsg');
+      if (res.ok) {
+        msgElem.style.color = 'green';
+        msgElem.textContent = data.message;
+        // Redirect to student dashboard or notes page
+        window.location.href = 'student-dashboard.html';
+      } else {
+        msgElem.style.color = 'red';
+        msgElem.textContent = data.message || 'Login failed';
+      }
+    });
+  </script>
+</body>
+</html>
